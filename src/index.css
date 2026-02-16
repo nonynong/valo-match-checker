@@ -1,0 +1,40 @@
+:root {
+  color-scheme: dark;
+  --bg: #050816;
+  --bg-elevated: #0b1020;
+  --accent: #ff4655;
+  --accent-soft: rgba(255, 70, 85, 0.2);
+  --text: #e5e7eb;
+  --muted: #6b7280;
+  --border: #1f2933;
+  --win: #22c55e;
+  --loss: #f97373;
+  --tie: #facc15;
+  --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: transparent;
+  font-family: var(--font-main);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}

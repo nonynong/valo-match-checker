@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Valorant Match Menubar",
+  "version": "0.1.0",
+  "identifier": "com.example.valorant-menubar",
+  "build": {
+    "beforeBuildCommand": "npm run build",
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://localhost:5174",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "label": "main",
+        "title": "Valorant Live Matches",
+        "url": "index.html",
+        "width": 380,
+        "height": 220,
+        "minWidth": 350,
+        "minHeight": 200,
+        "maxHeight": 280,
+        "resizable": true,
+        "decorations": false,
+        "alwaysOnTop": true,
+        "skipTaskbar": true,
+        "visibleOnAllWorkspaces": true,
+        "transparent": true,
+        "create": false,
+        "focusable": true,
+        "acceptFirstMouse": true
+      }
+    ]
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": [
+      "icons/icon.png"
+    ]
+  },
+  "plugins": {}
+}
+
