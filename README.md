@@ -1,6 +1,7 @@
 # Valorant Match Menubar App
 
-A beautiful macOS menu bar app built with Tauri and React that displays live Valorant esports match results.
+A simple macOS menu bar app built with Tauri and React that displays live Valorant esports match results.
+Utilizes vlrgg.api!
 
 ## Features
 
