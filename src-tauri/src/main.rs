@@ -36,6 +36,28 @@ struct MatchSegment {
     match_series: String,
     #[serde(default)]
     time_until_match: String,
+    #[serde(default)]
+    flag1: String,
+    #[serde(default)]
+    flag2: String,
+    #[serde(default)]
+    team1_logo: String,
+    #[serde(default)]
+    team2_logo: String,
+    #[serde(default)]
+    team1_round_ct: String,
+    #[serde(default)]
+    team1_round_t: String,
+    #[serde(default)]
+    team2_round_ct: String,
+    #[serde(default)]
+    team2_round_t: String,
+    #[serde(default)]
+    map_number: String,
+    #[serde(default)]
+    unix_timestamp: String,
+    #[serde(default)]
+    match_page: String,
 }
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
@@ -65,7 +87,7 @@ struct PolymarketOutcome {
 }
 
 // Test mode flag - set to true to use mock data
-const USE_TEST_DATA: bool = true; // Change to false to use real API
+const USE_TEST_DATA: bool = false; // Change to false to use real API
 
 fn get_test_matches() -> Vec<MatchSegment> {
     vec![
@@ -78,6 +100,17 @@ fn get_test_matches() -> Vec<MatchSegment> {
             match_event: "VCT 2025: Americas Stage 1".to_string(),
             match_series: "Regular Season".to_string(),
             time_until_match: "LIVE".to_string(),
+            flag1: "flag_us".to_string(),
+            flag2: "flag_us".to_string(),
+            team1_logo: "https://owcdn.net/img/62e7a0e8f1c0b.png".to_string(),
+            team2_logo: "https://owcdn.net/img/62e7a0e8f1c0b.png".to_string(),
+            team1_round_ct: "7".to_string(),
+            team1_round_t: "6".to_string(),
+            team2_round_ct: "5".to_string(),
+            team2_round_t: "4".to_string(),
+            map_number: "1".to_string(),
+            unix_timestamp: "1713996000".to_string(),
+            match_page: "https://www.vlr.gg/12345".to_string(),
         },
         MatchSegment {
             team1: "Fnatic".to_string(),
@@ -88,6 +121,17 @@ fn get_test_matches() -> Vec<MatchSegment> {
             match_event: "VCT 2025: EMEA Stage 1".to_string(),
             match_series: "Regular Season".to_string(),
             time_until_match: "LIVE".to_string(),
+            flag1: String::new(),
+            flag2: String::new(),
+            team1_logo: String::new(),
+            team2_logo: String::new(),
+            team1_round_ct: String::new(),
+            team1_round_t: String::new(),
+            team2_round_ct: String::new(),
+            team2_round_t: String::new(),
+            map_number: "2".to_string(),
+            unix_timestamp: String::new(),
+            match_page: String::new(),
         },
         MatchSegment {
             team1: "Paper Rex".to_string(),
@@ -98,6 +142,17 @@ fn get_test_matches() -> Vec<MatchSegment> {
             match_event: "VCT 2025: Pacific Stage 1".to_string(),
             match_series: "Regular Season".to_string(),
             time_until_match: "LIVE".to_string(),
+            flag1: String::new(),
+            flag2: String::new(),
+            team1_logo: String::new(),
+            team2_logo: String::new(),
+            team1_round_ct: String::new(),
+            team1_round_t: String::new(),
+            team2_round_ct: String::new(),
+            team2_round_t: String::new(),
+            map_number: "1".to_string(),
+            unix_timestamp: String::new(),
+            match_page: String::new(),
         },
         MatchSegment {
             team1: "LOUD".to_string(),
@@ -108,6 +163,17 @@ fn get_test_matches() -> Vec<MatchSegment> {
             match_event: "VCT 2025: Americas Stage 1".to_string(),
             match_series: "Regular Season".to_string(),
             time_until_match: "LIVE".to_string(),
+            flag1: String::new(),
+            flag2: String::new(),
+            team1_logo: String::new(),
+            team2_logo: String::new(),
+            team1_round_ct: String::new(),
+            team1_round_t: String::new(),
+            team2_round_ct: String::new(),
+            team2_round_t: String::new(),
+            map_number: "3".to_string(),
+            unix_timestamp: String::new(),
+            match_page: String::new(),
         },
         MatchSegment {
             team1: "G2 Esports".to_string(),
@@ -118,6 +184,17 @@ fn get_test_matches() -> Vec<MatchSegment> {
             match_event: "VCT 2025: EMEA Stage 1".to_string(),
             match_series: "Regular Season".to_string(),
             time_until_match: "LIVE".to_string(),
+            flag1: String::new(),
+            flag2: String::new(),
+            team1_logo: String::new(),
+            team2_logo: String::new(),
+            team1_round_ct: String::new(),
+            team1_round_t: String::new(),
+            team2_round_ct: String::new(),
+            team2_round_t: String::new(),
+            map_number: "2".to_string(),
+            unix_timestamp: String::new(),
+            match_page: String::new(),
         },
     ]
 }
@@ -350,9 +427,21 @@ async fn get_live_matches() -> Result<Vec<MatchSegment>, String> {
     fetch_live_matches().await.map_err(|e| e.to_string())
 }
 
+// Dummy Polymarket odds for UI preview (e.g. "Will Jesus Christ return before 2027?" — 4% Yes / 96% No)
+fn get_dummy_polymarket_odds() -> PolymarketOdds {
+    PolymarketOdds {
+        team1_odds: Some(0.04),
+        team2_odds: Some(0.96),
+        market_url: Some("https://polymarket.com/event/will-jesus-christ-return-before-2027".to_string()),
+    }
+}
+
 // Tauri command to get Polymarket odds for a match
 #[tauri::command]
 async fn get_polymarket_odds(team1: String, team2: String) -> Result<PolymarketOdds, String> {
+    if USE_TEST_DATA {
+        return Ok(get_dummy_polymarket_odds());
+    }
     fetch_polymarket_odds(&team1, &team2).await.map_err(|e| e.to_string())
 }
 
@@ -365,8 +454,8 @@ fn position_window_near_menu_bar<R: Runtime>(window: &tauri::WebviewWindow<R>) {
         // Calculate position: top-right corner, below menu bar
         // Menu bar is typically ~25-30px tall on macOS
         let menu_bar_height = 30.0;
-        let window_width = 380.0;
-        let window_height = 220.0;
+        let window_width = 420.0;
+        let window_height = 320.0;
         
         // Position at top-right, accounting for scale factor
         let x = (screen_size.width as f64 / scale_factor) - window_width - 10.0; // 10px margin from right edge

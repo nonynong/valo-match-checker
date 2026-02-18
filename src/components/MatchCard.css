@@ -112,25 +112,69 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  padding-bottom: 12px;
+}
+
+.team-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.team-logo {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.team-logo-placeholder {
+  background: rgba(148, 163, 184, 0.2);
+  display: inline-block;
 }
 
 .team-name {
   font-size: 13px;
   font-weight: 500;
   color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .team-score {
-  font-size: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'SF Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.team-rounds {
+  font-size: 22px;
   font-weight: 700;
+  color: var(--text);
   font-family: 'SF Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
   letter-spacing: 0.1em;
-  color: var(--text);
+}
+
+.score-legend {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.score-legend-sep {
+  opacity: 0.6;
 }
 
 .score-divider {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 22px;
+  font-weight: 700;
   color: var(--muted);
   font-family: 'SF Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
 }

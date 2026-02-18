@@ -27,7 +27,7 @@ body {
 }
 
 body {
-  background: transparent;
+  background: #000000;
   font-family: var(--font-main);
   color: var(--text);
   -webkit-font-smoothing: antialiased;

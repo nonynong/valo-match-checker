@@ -7,6 +7,9 @@ function MatchCard({ match }) {
   const score1 = parseInt(match.score1) || 0
   const score2 = parseInt(match.score2) || 0
   const isTied = score1 === score2
+  const rounds1 = (parseInt(match.team1_round_ct) || 0) + (parseInt(match.team1_round_t) || 0)
+  const rounds2 = (parseInt(match.team2_round_ct) || 0) + (parseInt(match.team2_round_t) || 0)
+  const hasRoundData = rounds1 > 0 || rounds2 > 0
   const [odds, setOdds] = useState(null)
   const [loadingOdds, setLoadingOdds] = useState(false)
 
@@ -41,11 +44,15 @@ function MatchCard({ match }) {
     }
   }
 
+  const mapLabel = match.map_number
+    ? `Map ${match.map_number} • ${(match.current_map || 'Unknown Map').toUpperCase()}`
+    : (match.current_map || 'Unknown Map').toUpperCase()
+
   return (
     <div className={`match-card ${isLive ? 'live' : ''}`}>
       <div className="match-header">
         <div className="match-info">
-          <div className="map-name">{match.current_map || 'Unknown Map'}</div>
+          <div className="map-name">{mapLabel}</div>
           <div className="match-series">{match.match_series || match.match_event || 'Series'}</div>
         </div>
         {isLive && (
@@ -58,8 +65,18 @@ function MatchCard({ match }) {
 
       <div className="match-teams">
         <div className="team">
-          <div className="team-name">{match.team1}</div>
-          <div className="team-score">{score1}</div>
+          <div className="team-row">
+            {match.team1_logo ? (
+              <img src={match.team1_logo} alt="" className="team-logo" />
+            ) : (
+              <span className="team-logo team-logo-placeholder" />
+            )}
+            <span className="team-name">{match.team1}</span>
+          </div>
+          <div className="team-score" title="Series (maps won)">{score1}</div>
+          {hasRoundData && (
+            <div className="team-rounds" title="Rounds this map">({rounds1})</div>
+          )}
           {odds && (
             <div className="team-odds">
               {loadingOdds ? (
@@ -72,10 +89,19 @@ function MatchCard({ match }) {
             </div>
           )}
         </div>
-        <div className="score-divider">:</div>
         <div className="team">
-          <div className="team-name">{match.team2}</div>
-          <div className="team-score">{score2}</div>
+          <div className="team-row">
+            {match.team2_logo ? (
+              <img src={match.team2_logo} alt="" className="team-logo" />
+            ) : (
+              <span className="team-logo team-logo-placeholder" />
+            )}
+            <span className="team-name">{match.team2}</span>
+          </div>
+          <div className="team-score" title="Series (maps won)">{score2}</div>
+          {hasRoundData && (
+            <div className="team-rounds" title="Rounds this map">({rounds2})</div>
+          )}
           {odds && (
             <div className="team-odds">
               {loadingOdds ? (
@@ -89,6 +115,7 @@ function MatchCard({ match }) {
           )}
         </div>
       </div>
+
 
       {odds?.market_url && (
         <a 
