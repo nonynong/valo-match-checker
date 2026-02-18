@@ -455,7 +455,7 @@ fn position_window_near_menu_bar<R: Runtime>(window: &tauri::WebviewWindow<R>) {
         // Menu bar is typically ~25-30px tall on macOS
         let menu_bar_height = 30.0;
         let window_width = 420.0;
-        let window_height = 320.0;
+        let window_height = 260.0;
         
         // Position at top-right, accounting for scale factor
         let x = (screen_size.width as f64 / scale_factor) - window_width - 10.0; // 10px margin from right edge

@@ -1,9 +1,7 @@
 .match-card {
   padding: 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(31, 41, 55, 0.8);
-  background: #020617;
-  transition: all 0.2s;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
   position: relative;
   overflow: hidden;
 }
@@ -15,28 +13,17 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: rgba(148, 163, 184, 0.2);
+  background: var(--border);
   opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.match-card:hover {
-  border-color: rgba(148, 163, 184, 0.4);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.5);
-}
-
-.match-card:hover::before {
-  opacity: 1;
 }
 
 .match-card.live {
-  border-color: rgba(239, 68, 68, 0.4);
-  background: rgba(15, 23, 42, 0.6);
+  border-color: var(--loss);
+  background: var(--accent-soft);
 }
 
 .match-card.live::before {
-  background: rgba(239, 68, 68, 0.3);
+  background: var(--loss);
 }
 
 .match-header {
@@ -71,9 +58,9 @@
   gap: 6px;
   padding: 3px 8px;
   border-radius: 999px;
-  background: rgba(239, 68, 68, 0.2);
+  background: var(--accent-soft);
   color: var(--loss);
-  border: 1px solid rgba(239, 68, 68, 0.4);
+  border: 1px solid var(--loss);
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
@@ -130,7 +117,7 @@
 }
 
 .team-logo-placeholder {
-  background: rgba(148, 163, 184, 0.2);
+  background: var(--border);
   display: inline-block;
 }
 
@@ -184,7 +171,7 @@
   color: var(--muted);
   margin-top: 4px;
   padding-top: 4px;
-  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  border-top: 1px solid var(--border);
 }
 
 .team-odds {
@@ -195,7 +182,7 @@
 }
 
 .odds-value {
-  color: #22c55e;
+  color: var(--win);
   font-weight: 600;
 }
 
@@ -213,14 +200,12 @@
   display: block;
   margin-top: 6px;
   padding-top: 6px;
-  border-top: 1px solid rgba(148, 163, 184, 0.1);
+  border-top: 1px solid var(--border);
   font-size: 9px;
-  color: #6366f1;
+  color: var(--link);
   text-decoration: none;
-  transition: color 0.2s;
 }
 
 .polymarket-link:hover {
-  color: #818cf8;
   text-decoration: underline;
 }

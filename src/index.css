@@ -1,16 +1,32 @@
 :root {
   color-scheme: dark;
-  --bg: #050816;
+  --bg: #000000;
   --bg-elevated: #0b1020;
-  --accent: #ff4655;
-  --accent-soft: rgba(255, 70, 85, 0.2);
+  --accent: #bb1c1c;
+  --accent-soft: rgba(28, 2, 4, 0.709);
+  --link: #3f6fff;
   --text: #e5e7eb;
   --muted: #6b7280;
   --border: #1f2933;
   --win: #22c55e;
-  --loss: #f97373;
+  --loss: #420505;
   --tie: #facc15;
   --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f1f5f9;
+  --bg-elevated: #ffffff;
+  --accent: #bb1c1c;
+  --accent-soft: rgba(225, 29, 72, 0.15);
+  --link: #3f6fff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #cbd5e1;
+  --win: #16a34a;
+  --loss: #dc2626;
+  --tie: #ca8a04;
 }
 
 * {
@@ -23,11 +39,12 @@ html,
 body {
   width: 100%;
   height: 100%;
+  margin: 0;
   overflow: hidden;
 }
 
 body {
-  background: #000000;
+  background: var(--bg);
   font-family: var(--font-main);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
