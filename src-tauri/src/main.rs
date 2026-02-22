@@ -11,12 +11,14 @@ use tauri::{
 use tokio::time::{interval, Duration};
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 struct ApiResponse {
     status: String,
     data: ApiData,
 }
 
 #[derive(Debug, Deserialize)]
+#[allow(dead_code)]
 struct ApiData {
     status: u16,
     segments: Vec<MatchSegment>,
@@ -65,25 +67,6 @@ struct PolymarketOdds {
     team1_odds: Option<f64>,
     team2_odds: Option<f64>,
     market_url: Option<String>,
-}
-
-#[derive(Debug, Deserialize)]
-struct PolymarketSearchResponse {
-    results: Vec<PolymarketMarket>,
-}
-
-#[derive(Debug, Deserialize)]
-struct PolymarketMarket {
-    id: String,
-    question: String,
-    outcomes: Vec<PolymarketOutcome>,
-    slug: Option<String>,
-}
-
-#[derive(Debug, Deserialize)]
-struct PolymarketOutcome {
-    title: String,
-    price: Option<String>,
 }
 
 // Test mode flag - set to true to use mock data
@@ -236,60 +219,6 @@ fn format_match_text(segment: &MatchSegment) -> String {
     } else {
         format!("{} | {}", teams, score)
     }
-}
-
-fn update_tray_menu<R: Runtime>(
-    tray: &TrayIcon<R>,
-    app: &tauri::AppHandle<R>,
-    matches: &[MatchSegment],
-) -> Result<(), Box<dyn std::error::Error>> {
-    let mut builder = MenuBuilder::new(app);
-
-    if matches.is_empty() {
-        builder = builder.item(&MenuItem::with_id(app, "no_matches", "No live matches", true, None::<&str>)?);
-        let menu = builder.build()?;
-        tray.set_menu(Some(menu))?;
-        tray.set_tooltip(Some("Valorant: No live matches"))?;
-        return Ok(());
-    }
-
-    // Add header
-    builder = builder.item(&MenuItem::with_id(app, "header", "🔴 LIVE MATCHES", false, None::<&str>)?);
-    builder = builder.separator();
-
-    // Add each match (limit to 5)
-    for (idx, match_seg) in matches.iter().take(5).enumerate() {
-        let match_text = format_match_text(match_seg);
-        let item = MenuItem::with_id(
-            app,
-            &format!("match_{}", idx),
-            &match_text,
-            true,
-            None::<&str>,
-        )?;
-        builder = builder.item(&item);
-    }
-
-    // Add separator and actions
-    builder = builder.separator();
-    builder = builder.item(&MenuItem::with_id(app, "refresh", "🔄 Refresh", true, None::<&str>)?);
-    if USE_TEST_DATA {
-        builder = builder.item(&MenuItem::with_id(app, "toggle_test_mode", "🧪 Test Mode (ON)", false, None::<&str>)?);
-    }
-    builder = builder.item(&MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?);
-
-    let menu = builder.build()?;
-    tray.set_menu(Some(menu))?;
-
-    // Update tooltip with first match info
-    let tooltip_text = if let Some(first_match) = matches.first() {
-        format!("Valorant: {}", format_match_text(first_match))
-    } else {
-        "Valorant: No live matches".to_string()
-    };
-    tray.set_tooltip(Some(tooltip_text.as_str()))?;
-
-    Ok(())
 }
 
 // Convert team name to Polymarket slug format (lowercase, remove spaces, common abbreviations)
@@ -455,7 +384,7 @@ fn position_window_near_menu_bar<R: Runtime>(window: &tauri::WebviewWindow<R>) {
         // Menu bar is typically ~25-30px tall on macOS
         let menu_bar_height = 30.0;
         let window_width = 420.0;
-        let window_height = 260.0;
+        let _window_height = 260.0;
         
         // Position at top-right, accounting for scale factor
         let x = (screen_size.width as f64 / scale_factor) - window_width - 10.0; // 10px margin from right edge
@@ -489,17 +418,14 @@ fn main() {
                 .build()?;
             builder = builder.menu(&minimal_menu);
 
-            // Store tray reference for menu refresh handler (will be populated after build)
+            // Store tray reference (populated after build)
             let tray_ref: Arc<Mutex<Option<TrayIcon<_>>>> = Arc::new(Mutex::new(None));
-            let tray_ref_for_menu = tray_ref.clone();
-            
+
             // Build the tray icon with event handlers
             // Note: macOS automatically keeps menus open while hovering over the tray icon
             // The Enter/Move/Leave events help track hover state for custom behavior
             let tray = builder
-                .on_tray_icon_event({
-                    let app_clone = app_handle.clone();
-                    move |tray_icon, event| {
+                .on_tray_icon_event(move |tray_icon, event| {
                         match event {
                             TrayIconEvent::Click { .. } => {
                                 // On click, open/show the React popover window
@@ -545,7 +471,6 @@ fn main() {
                             }
                             _ => {}
                         }
-                    }
                 })
                 .on_menu_event({
                     move |app, event| {
